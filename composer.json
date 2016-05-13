@@ -1,0 +1,31 @@
+{
+  "name": "nekroido/micro",
+  "description": "PHP micro framework",
+  "keywords": [
+    "micro",
+    "framework"
+  ],
+  "type": "library",
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Micro": "Micro/"
+    }
+  },
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nekroido aka Artem Smirnov",
+      "email": "nekroido@windowslive.com"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/Nekroido/micro"
+    }
+  ]
+}
