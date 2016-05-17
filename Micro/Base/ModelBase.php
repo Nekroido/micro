@@ -27,8 +27,12 @@ abstract class ModelBase
      */
     public function __set($propertyName, $value)
     {
+        $setterName = 'set' . ucfirst($propertyName);
+
         if (isset($this->$propertyName))
             $this->$propertyName = $value;
+        else if (method_exists($this, $setterName))
+            $this->$setterName($value);
         else
             $this->dynamicProperties[$propertyName] = $value;
     }
@@ -41,9 +45,11 @@ abstract class ModelBase
     {
         $getterName = 'get' . ucfirst($propertyName);
 
-        if (isset($this->$propertyName))
-            return $this->$propertyName;
-        else if (isset($this->dynamicProperties[$propertyName]))
+        if (property_exists($this, $propertyName)) {
+            $reflection = new \ReflectionProperty($this, $propertyName);
+            $reflection->setAccessible($propertyName);
+            return $reflection->getValue($this);
+        } else if (isset($this->dynamicProperties[$propertyName]))
             return $this->dynamicProperties[$propertyName];
         else if (method_exists($this, $getterName))
             return $this->$getterName();
