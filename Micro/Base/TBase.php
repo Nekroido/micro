@@ -13,8 +13,8 @@ namespace Micro\Base;
 trait TBase
 {
     /**
-     * @param null $className
-     * @return mixed
+     * @param string|null $className
+     * @return static
      */
     public static function getInstance($className = null)
     {

@@ -7,6 +7,7 @@
 namespace Micro\Db;
 
 use Micro\Base\ModelBase;
+use Micro\Db\Helpers\RelationBase;
 use Micro\Helpers\Log;
 use Micro\Micro;
 
@@ -59,6 +60,10 @@ abstract class ActiveRecordModelBase extends ModelBase
     const ACTION_SAVE = 0;
     const ACTION_UPDATE = 1;
 
+    /**
+     * @param string $propertyName
+     * @return ActiveRecordModelBase|mixed|null|static|static[]
+     */
     final public function __get($propertyName)
     {
         if (parent::__isset($propertyName))
@@ -77,6 +82,10 @@ abstract class ActiveRecordModelBase extends ModelBase
         }
     }
 
+    /**
+     * @param string $propertyName
+     * @return bool
+     */
     final public function __isset($propertyName)
     {
         return parent::__isset($propertyName) || isset($this->relations[$propertyName]);
@@ -99,14 +108,16 @@ abstract class ActiveRecordModelBase extends ModelBase
     /**
      * Get related records
      * @param string $relationName
-     * @return array|object|null
+     * @return static|static[]
      */
     private function related($relationName)
     {
         if (array_key_exists($relationName, $this->relations)) {
+            /** @var ActiveRecordModelBase $modelClass */
             $modelClass = $this->relations[$relationName][1];
             $relationClass = '\\Micro\\Db\\Relations\\' . $this->relations[$relationName][0];
 
+            /** @var RelationBase $relation */
             $relation = new $relationClass();
 
             $query = $relation->getQuery(
@@ -124,7 +135,7 @@ abstract class ActiveRecordModelBase extends ModelBase
     /**
      * Returns the latest entry in a table
      * @param array $params
-     * @return object|null
+     * @return static|null
      */
     public final function last($params = [])
     {
@@ -137,7 +148,7 @@ abstract class ActiveRecordModelBase extends ModelBase
 
     /**
      * @param array $params
-     * @return object|null
+     * @return static
      */
     public final function first($params = [])
     {
@@ -147,7 +158,7 @@ abstract class ActiveRecordModelBase extends ModelBase
     /**
      * @param array $params
      * @param bool|true $fetchAll
-     * @return array|mixed
+     * @return static[]|static
      */
     public final function find($params = [], $fetchAll = true)
     {
@@ -160,7 +171,7 @@ abstract class ActiveRecordModelBase extends ModelBase
     /**
      * @param Query $query
      * @param bool|true $fetchAll
-     * @return array|mixed
+     * @return static[]|static
      * @throws \Exception
      */
     public final function query(Query $query, $fetchAll = true)
@@ -244,7 +255,7 @@ abstract class ActiveRecordModelBase extends ModelBase
     }
 
     /**
-     * @return ActiveRecordModelBase
+     * @return static
      */
     public final function save()
     {
@@ -256,7 +267,7 @@ abstract class ActiveRecordModelBase extends ModelBase
 
     /**
      * @param array $fields
-     * @return ActiveRecordModelBase
+     * @return static
      */
     public final function update($fields = [])
     {
@@ -269,7 +280,7 @@ abstract class ActiveRecordModelBase extends ModelBase
     /**
      * @param array $fields
      * @param int $action
-     * @return ActiveRecordModelBase
+     * @return static
      */
     private function commit($fields = [], $action = self::ACTION_SAVE)
     {
