@@ -71,7 +71,7 @@ abstract class ModelBase
      */
     public function __isset($propertyName)
     {
-        return empty($this->$propertyName)
+        return !empty($this->$propertyName)
         || isset($this->dynamicProperties[$propertyName])
         || method_exists($this, 'get' . ucfirst($propertyName));
     }
