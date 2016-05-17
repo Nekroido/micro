@@ -11,7 +11,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Micro": "Micro/"
+      "Micro": "Micro\\"
     }
   },
   "minimum-stability": "dev",
