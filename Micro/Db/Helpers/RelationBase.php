@@ -17,7 +17,7 @@ abstract class RelationBase
     /**
      * @var bool Fetch all or single record
      */
-    protected $fetchAll = true;
+    public $fetchAll = true;
 
     /**
      * @param object $parent
@@ -25,5 +25,5 @@ abstract class RelationBase
      * @param string|array $field or an array with [connection_table, parent_primary_id, relation_primary_id]
      * @return Query
      */
-    abstract protected function getQuery($parent, $table, $field);
+    abstract public function getQuery($parent, $table, $field);
 }
